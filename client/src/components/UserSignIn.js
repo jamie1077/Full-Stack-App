@@ -8,12 +8,13 @@ export default function UserSignIn({ context }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  // Checks api for authenticated user with error handling
   const handleSubmit = (e) => {
     e.preventDefault();
-    context.actions.signIn(username, password).then((res) => {
-      if (res === null) {
+    context.actions.signIn(username, password).then((response) => {
+      if (response === null) {
         console.log("Sign-In Has Failed!");
-      } else if (res === 500) {
+      } else if (response === 500) {
         navigate('/error');
       } else if (location.state?.from) {
         navigate(location.state.from);

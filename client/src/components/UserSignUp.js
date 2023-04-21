@@ -11,6 +11,7 @@ export default function UserSignUp({ context }) {
   const [password, setPassword] = useState();
   const [errors, setErrors] = useState([]);
 
+  // Function to create a user on form submit
   const handleSubmit = (e) => {
     e.preventDefault();
     const user = {
@@ -19,6 +20,8 @@ export default function UserSignUp({ context }) {
       emailAddress: username,
       password,
     };
+
+    //Send POST request to api with error handling
     context.data.createUser(user).then((res) => {
       if (res.length) {
         setErrors(res);
@@ -31,7 +34,6 @@ export default function UserSignUp({ context }) {
             } else {
               navigate('/');
             }
-          
         });
       }
     });

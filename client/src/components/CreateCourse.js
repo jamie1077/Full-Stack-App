@@ -12,9 +12,11 @@ export default function  CreateCourse({ context }) {
   const [errors, setErrors] = useState([]);
 
 
+    /** EVENT HANDLERS **/
+
+  // Function to create a course on form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const body = {
       userId: context.authenticatedUser.id,
       title,
@@ -23,6 +25,7 @@ export default function  CreateCourse({ context }) {
       materialsNeeded,
     };
 
+    //Send POST request to api with error handling
     await context.data
       .createCourse(
         body,

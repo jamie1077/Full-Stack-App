@@ -12,6 +12,7 @@ export default function UpdateCourse({ context }) {
   const [materialsNeeded, setMaterialsNeeded] = useState("");
   const [errors, setErrors] = useState("");
 
+  // Fetch course details using Id parameter with error handling 
   useEffect(() => {
     context.data.getCourse(id)
       .then((response) => {
@@ -32,7 +33,9 @@ export default function UpdateCourse({ context }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Event Handlers  
+  /** EVENT HANDLERS **/
+
+  // Function to update course on form submit
   const handleSubmit = (e) => {
     e.preventDefault();
     const body = {
@@ -42,6 +45,7 @@ export default function UpdateCourse({ context }) {
       materialsNeeded,
     };
  
+    //Send PUT request to api with error handling
     context.data.updateCourse(
       id,
       body,
@@ -62,11 +66,11 @@ export default function UpdateCourse({ context }) {
     });
   }
 
+  //On cancel return to course detail page
   const handleCancel = (e) => {
     e.preventDefault();
     navigate(`/courses/${id}`);
   }
-
 
   return (
     <main>

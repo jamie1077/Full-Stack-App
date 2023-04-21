@@ -4,6 +4,7 @@ import { Link, Navigate } from "react-router-dom";
 export default function Courses({ context }) {
   const [courses, setCourses] = useState([]);
 
+  /* Fetch all courses with error handling */
   useEffect(() => {
     context.data.getCourses()
     .then((response) => {

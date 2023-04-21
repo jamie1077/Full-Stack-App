@@ -9,6 +9,7 @@ export default function CourseDetail({ context }) {
 
   const navigate = useNavigate();
 
+  // Fetch course details using Id parameter with error handling 
   useEffect(() => {
     context.data.getCourse(id)
       .then((response) => {
@@ -24,6 +25,7 @@ export default function CourseDetail({ context }) {
   }, []);
 
 
+  // Send DELETE request to api with error handling
   const handleDeleteCourse = (e) => {
     e.preventDefault();
 
@@ -31,11 +33,10 @@ export default function CourseDetail({ context }) {
       id,
       context.authenticatedUser.emailAddress,
       context.authenticatedUser.password
-    )
-    .then((response) => {
+    ).then((response) => {
       if (response === 204) {
         navigate('/');
-      } else if (response === 403){
+      } else if (response === 403) {
         navigate('/forbidden');
       } else {
         navigate('/error');
