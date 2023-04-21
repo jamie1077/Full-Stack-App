@@ -27,7 +27,20 @@ export default function CourseDetail({ context }) {
   const handleDeleteCourse = (e) => {
     e.preventDefault();
 
-    console.log(e);
+    context.data.deleteCourse(
+      id,
+      context.authenticatedUser.emailAddress,
+      context.authenticatedUser.password
+    )
+    .then((response) => {
+      if (response === 204) {
+        navigate('/');
+      } else if (response === 403){
+        navigate('/forbidden');
+      } else {
+        navigate('/error');
+      }
+    });
   };
 
   return (

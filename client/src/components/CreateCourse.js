@@ -10,25 +10,7 @@ export default function  CreateCourse({ context }) {
   const [estimatedTime, setEstimatedTime] = useState("");
   const [materialsNeeded, setMaterialsNeeded] = useState("");
   const [errors, setErrors] = useState([]);
-  
-  const handleChange = (event) => {
-    event.preventDefault();
 
-    const name = event.target.name;
-    const value = event.target.value;
-
-    if (name === "courseTitle") {
-      setTitle(value);
-    } else if (name === "courseDescription") {
-      setDescription(value);
-    } else if (name === "estimatedTime") {
-      setEstimatedTime(value);
-    } else if (name === "materialsNeeded") {
-      setMaterialsNeeded(value);
-    } else {
-      return;
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,16 +29,17 @@ export default function  CreateCourse({ context }) {
         context.authenticatedUser.emailAddress,
         context.authenticatedUser.password
       )
-      .then((res) => {
-        if (res.length) {
-          setErrors(res);
-        } else if (res === 500) {
+      .then((response) => {
+        if (response.length) {
+          setErrors(response);
+        } else if (response === 500) {
           navigate('/error')
         } else {
           navigate('/')
         }
       });
   };
+
   return (
     <main>
       <div className="wrap">
@@ -79,8 +62,8 @@ export default function  CreateCourse({ context }) {
                 id="courseTitle"
                 name="courseTitle"
                 type="text"
-                value={title}
-                onChange={handleChange}
+                value={title || ''}
+                onChange={e => setTitle(e.target.value)}
               />
 
               <p>
@@ -92,8 +75,8 @@ export default function  CreateCourse({ context }) {
               <textarea
                 id="courseDescription"
                 name="courseDescription"
-                value={description}
-                onChange={handleChange}
+                value={description || ''}
+                onChange={e => setDescription(e.target.value)}
               ></textarea>
             </div>
             <div>
@@ -102,16 +85,16 @@ export default function  CreateCourse({ context }) {
                 id="estimatedTime"
                 name="estimatedTime"
                 type="text"
-                value={estimatedTime}
-                onChange={handleChange}
+                value={estimatedTime || ''}
+                onChange={e => setEstimatedTime(e.target.value)}
               />
 
               <label htmlFor="materialsNeeded">Materials Needed</label>
               <textarea
                 id="materialsNeeded"
                 name="materialsNeeded"
-                value={materialsNeeded}
-                onChange={handleChange}
+                value={materialsNeeded || ''}
+                onChange={e => setMaterialsNeeded(e.target.value)}
               ></textarea>
             </div>
           </div>
@@ -119,7 +102,7 @@ export default function  CreateCourse({ context }) {
             Create Course
           </button>
           <Link className="button button-secondary" to="/">
-            {" "}
+          
             Cancel
           </Link>
         </form>
