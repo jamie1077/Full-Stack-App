@@ -42,24 +42,32 @@ export default function UpdateCourse({ context }) {
       materialsNeeded,
     };
 
-    context.data.updateCourse(
-      id,
+    console.log(body);
+    console.log(context.authenticatedUser.id)
+    console.log(context.authenticatedUser.emailAddress)
+    console.log(context.data.updateCourse(context.data.updateCourse(
+      id, 
       body,
       context.authenticatedUser.emailAddress,
-      context.authenticatedUser.password
-    ).then((response) => {
-      if (response.length) {
-        setErrors(response);
-      } else if (response === 500) {
-        navigate("/error");
-      } else {
-        navigate("/");
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      navigate("/");
-    });
+      context.authenticatedUser.password)));
+    // context.data.updateCourse(
+    //   id,
+    //   body,
+    //   context.authenticatedUser.emailAddress,
+    //   context.authenticatedUser.password
+    // ).then((response) => {
+    //   if (response.length) {
+    //     setErrors(response);
+    //   } else if (response === 500) {
+    //     navigate("/error");
+    //   } else {
+    //     navigate("/");
+    //   }
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    //   navigate("/");
+    // });
   }
 
   const handleCancel = (e) => {
