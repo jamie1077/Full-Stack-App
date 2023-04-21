@@ -9,77 +9,52 @@ export default function CourseDetail({ context }) {
 
   const navigate = useNavigate();
 
-/** on page load , fetching course details with Id para
- * if data doesnt exist , send user to /notfound
- * if 500 returned , send user to /error
- * else show the course details
- */
   useEffect(() => {
     context.data.getCourse(id)
-    .then((response) => {
+      .then((response) => {
         if (response === 404) {
-            navigate('/notfound')
-        } else if (response === 500){
-            navigate('/error')
-        } else{
-            setCourse(response.course);
+          navigate('/notfound')
+        } else if (response === 500) {
+          navigate('/error')
+        } else {
+          setCourse(response.course);
         }
       });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
-/** Sendeing DELETE request to the api to delete the course
- * if it was successfully done , take user home '/'
- * if unauthorised or forbidden send use to /forbidden,
- * else send user to /error
- */
 
   const handleDeleteCourse = (e) => {
     e.preventDefault();
 
-    context.data.deleteCourse(
-        id,
-        context.authenticatedUser.emailAddress,
-        context.authenticatedUser.password
-      )
-      .then((res) => {
-        
-        if (res === 204) {
-          navigate('/');
-        } else if (res === 401){
-          navigate('/forbidden');
-        } else {
-          navigate('/error');
-        }
-      });
+    console.log(e);
   };
 
   return (
     <main>
       <div className="actions--bar">
         {
-          //displaying update and delete buttons only if user is authenticated.
+          //display update and delete buttons only if the user is authenticated.
           context.authenticatedUser &&
-        context.authenticatedUser.id === course.userId ? (
-          <div className="wrap">
-            <Link className="button" to="update">
-              Update Course{" "}
-            </Link>
-            <button className="button" onClick={handleDeleteCourse}>
-              Delete Course
-            </button>
-            <Link className="button button-secondary" to="/">
-              Return to List
-            </Link>
-          </div>
-        ) : (
-          <div className="wrap">
-            <Link className="button button-secondary" to="/">
-              Return to List
-            </Link>
-          </div>
-        )}
+            context.authenticatedUser.id === course.userId ? (
+            <div className="wrap">
+              <Link className="button" to="update">
+                Update Course{" "}
+              </Link>
+              <button className="button" onClick={handleDeleteCourse}>
+                Delete Course
+              </button>
+              <Link className="button button-secondary" to="/">
+                Return to List
+              </Link>
+            </div>
+          ) : (
+            <div className="wrap">
+              <Link className="button button-secondary" to="/">
+                Return to List
+              </Link>
+            </div>
+          )}
       </div>
 
       <div className="wrap">
@@ -90,7 +65,7 @@ export default function CourseDetail({ context }) {
               <h3 className="course--detail--title">Course</h3>
               <h4 className="course--name">{course.title}</h4>
               <p>
-              By{" "}
+                By{" "}
                 {course.User?.firstName +
                   " " +
                   course.User?.lastName}

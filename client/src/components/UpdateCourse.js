@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function UpdateCourse({ context }) {
-  //states
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -13,95 +12,45 @@ export default function UpdateCourse({ context }) {
   const [materialsNeeded, setMaterialsNeeded] = useState("");
   const [errors, setErrors] = useState("");
 
-  /** on page load get course details
-   * if data doesnt exist send user to /notfound
-   * else if 500 is returned send user to /error
-   * else if user is owner set course states
-   * else user dont have persmission send to /forbidden
-   */
-
   useEffect(() => {
-    context.data.getCourse(id).then((data) => {
-      if (data === 404) {
-        navigate("/notfound");
-      } else if (data === 500) {
-        navigate("/error");
-      } else if (data.userId === context.authenticatedUser.id) {
-        console.log(data);
-        setCourse(data);
-        setTitle(data.title);
-        setDescription(data.description);
-        setEstimatedTime(data.estimatedTime);
-        setMaterialsNeeded(data.materialsNeeded);
-      } else {
-        navigate("/forbidden");
-      }
-    });
-     // eslint-disable-next-line react-hooks/exhaustive-deps
+    context.data.getCourse(id)
+      .then((response) => {
+        if (response === 404) {
+          navigate("/notfound");
+        } else if (response === 500) {
+          navigate("/error");
+        } else if (response.course.userId === context.authenticatedUser.id) {
+          setCourse(response.course);
+          setTitle(response.course.title);
+          setDescription(response.course.description);
+          setEstimatedTime(response.course.estimatedTime);
+          setMaterialsNeeded(response.course.materialsNeeded);
+        } else {
+          navigate("/forbidden");
+        }
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //update any course data
-  const handleUpdate = (e) => {
+  // Event Handlers  
+  const handleSubmit = (e) => {
     e.preventDefault();
-
     const body = {
       title,
       description,
       estimatedTime,
       materialsNeeded,
     };
-    context.data
-      .updateCourse(
-        id,
-        body,
-        context.authenticatedUser.emailAddress,
-        context.authenticatedUser.password
-      )
-      /**if array returns display errors
-       * else if 500 is returned send user to /error
-       * else send user to home /
-       */
-      .then((res) => {
-        if (res.length) {
-          setErrors(res);
-        } else if (res === 500) {
-          navigate("/error");
-        } else {
-          navigate("/");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        navigate("/");
-      });
-  };
+    console.log(context.data.updateCourse(id, body, context.authenticatedUser.emailAddress, context.authenticatedUser.password));
+    
+    
+  }
 
-  //handle changes to course data fields
-  const handleChange = (e) => {
-    e.preventDefault();
-
-    const name = e.target.name;
-    const value = e.target.value;
-
-    if (name === "courseTitle") {
-      setTitle(value);
-    } else if (name === "courseDescription") {
-      setDescription(value);
-    } else if (name === "estimatedTime") {
-      setEstimatedTime(value);
-    } else if (name === "materialsNeeded") {
-      // console.log(value)
-      setMaterialsNeeded(value);
-    } else {
-      return;
-    }
-  };
-
-  // cancel button
   const handleCancel = (e) => {
     e.preventDefault();
     navigate(`/courses/${id}`);
-  };
+  }
+  
 
   return (
     <main>
@@ -117,7 +66,7 @@ export default function UpdateCourse({ context }) {
             </ul>
           </div>
         ) : null}
-        <form onSubmit={handleUpdate}>
+        <form onSubmit={handleSubmit}>
           <div className="main--flex">
             <div>
               <label htmlFor="courseTitle">Course Title</label>
@@ -125,8 +74,8 @@ export default function UpdateCourse({ context }) {
                 id="courseTitle"
                 name="courseTitle"
                 type="text"
-                value={title}
-                onChange={handleChange}
+                value={title || ''}
+                onChange={e => setTitle(e.target.value)}
               />
 
               <p>
@@ -137,8 +86,8 @@ export default function UpdateCourse({ context }) {
               <textarea
                 id="courseDescription"
                 name="courseDescription"
-                value={description}
-                onChange={handleChange}
+                value={description || ''}
+                onChange={e => setDescription(e.target.value)}
               ></textarea>
             </div>
             <div>
@@ -147,16 +96,16 @@ export default function UpdateCourse({ context }) {
                 id="estimatedTime"
                 name="estimatedTime"
                 type="text"
-                value={estimatedTime}
-                onChange={handleChange}
+                value={estimatedTime || ''}
+                onChange={e => setEstimatedTime(e.target.value)}
               />
 
               <label htmlFor="materialsNeeded">Materials Needed</label>
               <textarea
                 id="materialsNeeded"
                 name="materialsNeeded"
-                value={materialsNeeded}
-                onChange={handleChange}
+                value={materialsNeeded || ''}
+                onChange={e => setMaterialsNeeded(e.target.value)}
               ></textarea>
             </div>
           </div>

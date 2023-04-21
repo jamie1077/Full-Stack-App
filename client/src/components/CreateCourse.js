@@ -1,12 +1,9 @@
-//think again before you do it
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 
 export default function  CreateCourse({ context }) {
 
   const navigate = useNavigate();
-
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -14,11 +11,6 @@ export default function  CreateCourse({ context }) {
   const [materialsNeeded, setMaterialsNeeded] = useState("");
   const [errors, setErrors] = useState([]);
   
-/** setting values for each part 
- * title, description , estimated time, materialsNeeded
- */
- 
-
   const handleChange = (event) => {
     event.preventDefault();
 
@@ -38,13 +30,6 @@ export default function  CreateCourse({ context }) {
     }
   };
 
-
-  /** after submiting form , send a POST request to API
-   * if array is returned, display errors
-   * if 500 is returned , send user to /error
-   * else send user to home '/'
-   */
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -55,9 +40,6 @@ export default function  CreateCourse({ context }) {
       estimatedTime,
       materialsNeeded,
     };
-    // console.log(context.authenticatedUser.emailAddress)
-    // console.log(context.authenticatedUser.password)
-    // console.log(body);
 
     await context.data
       .createCourse(
@@ -66,7 +48,6 @@ export default function  CreateCourse({ context }) {
         context.authenticatedUser.password
       )
       .then((res) => {
-        // errors from response
         if (res.length) {
           setErrors(res);
         } else if (res === 500) {

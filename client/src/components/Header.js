@@ -9,13 +9,11 @@ export default function Header(props) {
     <header>
       <div className="wrap header--flex">
         <h1 className="header--logo">
-          <Link to="/"> Courses </Link>
+          <Link to="/">Courses</Link>
         </h1>
         <nav>
           {
-            /**if user is authenticated '?' display user's name and signout
-             */
-            authUser ? ( // if user is authenticated  sign out option
+            authUser ? ( 
             <ul className="header--signedin">
               <li>{`Welcome, ${authUser.firstName} ${authUser.lastName}!`}</li>
               <li>

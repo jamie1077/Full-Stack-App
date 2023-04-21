@@ -7,10 +7,7 @@ export default function UserSignIn({ context }) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  /** send POST request on form submit
-   * if 500 is returned send user to /error
-   * else send user to home '/'
-   */
+
   const handleSubmit = (e) => {
     e.preventDefault();
     context.actions.signIn(username, password).then((res) => {
