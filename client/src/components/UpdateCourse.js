@@ -41,16 +41,32 @@ export default function UpdateCourse({ context }) {
       estimatedTime,
       materialsNeeded,
     };
-    console.log(context.data.updateCourse(id, body, context.authenticatedUser.emailAddress, context.authenticatedUser.password));
-    
-    
+
+    context.data.updateCourse(
+      id,
+      body,
+      context.authenticatedUser.emailAddress,
+      context.authenticatedUser.password
+    ).then((response) => {
+      if (response.length) {
+        setErrors(response);
+      } else if (response === 500) {
+        navigate("/error");
+      } else {
+        navigate("/");
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      navigate("/");
+    });
   }
 
   const handleCancel = (e) => {
     e.preventDefault();
     navigate(`/courses/${id}`);
   }
-  
+
 
   return (
     <main>
